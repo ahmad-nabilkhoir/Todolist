@@ -1,51 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mb-4">My To-Do List</h1>
-
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">📋 Daftar Tugas</h2>
+            <a href="{{ route('tasks.create') }}" class="btn btn-success">+ Tambah Tugas</a>
         </div>
-    @endif
 
-    @if ($tasks->isEmpty())
-        <p>No tasks found. <a href="{{ route('tasks.create') }}">Add one!</a></p>
-    @else
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Completed</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        <form method="GET" action="{{ route('tasks.index') }}" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Cari tugas..."
+                    value="{{ request('search') }}">
+                <button class="btn btn-outline-secondary" type="submit">🔍 Cari</button>
+            </div>
+        </form>
+
+        <p class="text-muted small mb-2">Centang jika tugas selesai</p>
+        @if ($tasks->count())
+            <div class="list-group shadow-sm">
                 @foreach ($tasks as $task)
-                    <tr>
-                        <td>{{ $task->title }}</td>
-                        <td>{{ $task->description }}</td>
-                        <td>
-                            @if($task->is_completed)
-                                <span class="badge bg-success">Yes</span>
-                            @else
-                                <span class="badge bg-secondary">No</span>
-                            @endif
-                        </td>
-                        <td>
-                            <a class="btn btn-sm btn-warning" href="{{ route('tasks.edit', $task->id) }}">Edit</a>
-                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+                    <div class="row mb-3">
+                        <div
+                            class="col-12 list-group-item d-flex justify-content-between align-items-center flex-wrap {{ $task->completed ? 'bg-light text-muted' : '' }}">
+                            <div class="mb-2 d-flex align-items-center gap-2">
+                                <form action="{{ route('tasks.toggle', $task->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="checkbox" onchange="this.form.submit()"
+                                        {{ $task->completed ? 'checked' : '' }}>
+                                </form>
+                                <div>
+                                    <h5 class="mb-1 {{ $task->completed ? 'text-decoration-line-through' : '' }}">
+                                        {{ $task->title }}</h5>
+                                    <p class="mb-0 text-muted">{{ $task->description }}</p>
+                                    <small>
+                                        📅
+                                        <strong>{{ \Carbon\Carbon::parse($task->due_date)->format('d M Y') }}</strong>
+                                        |
+                                        ⚠️ <strong>{{ ucfirst($task->priority) }}</strong>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-sm btn-warning">✏️
+                                    Edit</a>
+                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Yakin hapus tugas ini?')">🗑️ Hapus</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
-            </tbody>
-        </table>
-    @endif
+            </div>
+        @else
+            <div class="alert alert-info mt-4">Belum ada tugas ditemukan.</div>
+        @endif
+    </div>
 @endsection
