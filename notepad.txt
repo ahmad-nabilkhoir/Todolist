@@ -1,0 +1,57 @@
+# Laravel Todolist
+
+Sebuah proyek to-do list sederhana menggunakan Laravel.
+
+## Fitur
+- Autentikasi pengguna (Login, Register, Logout)
+- Tambah, ubah, dan hapus tugas
+- Tandai tugas selesai
+- Tanggal jatuh tempo untuk tugas
+
+## Instalasi
+
+1. Clone repository ini:
+git clone https://github.com/Akhlishkhairulanam/Todolist.git
+cd Todolist
+
+markdown
+Copy
+Edit
+
+2. Install dependency:
+composer install
+
+markdown
+Copy
+Edit
+
+3. Salin file `.env` dari contoh:
+cp .env.example .env
+
+markdown
+Copy
+Edit
+
+4. Generate APP_KEY:
+php artisan key:generate
+
+markdown
+Copy
+Edit
+
+5. Jalankan migrasi:
+php artisan migrate
+
+markdown
+Copy
+Edit
+
+6. Jalankan aplikasi:
+php artisan serve
+
+shell
+Copy
+Edit
+
+## License
+MIT
