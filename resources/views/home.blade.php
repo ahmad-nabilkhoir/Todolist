@@ -3,7 +3,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold custom-title">
-            <i class="bi bi-ui-checks-grid text-primary me-2"></i> Dashboard Tugas
+            <i class="bi bi-ui-checks-grid text-primary me-2"></i> Dashboard Tugas Nabil
         </h2>
         <a href="{{ route('tasks.create') }}" class="btn btn-custom tambah-tugas-btn">
             <i class="bi bi-journal-plus me-1"></i> Tambah Tugas
