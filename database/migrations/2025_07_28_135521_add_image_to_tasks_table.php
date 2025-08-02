@@ -12,15 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
-                table->boolean('is_completed')->default(false);
-                $table->string('status')->default('belum');
+            $table->string('image')->nullable();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->dropColumn('is_completed');
+            //
         });
     }
 };
